@@ -3,21 +3,15 @@ class Particle{
   PVector pos;
   
   Particle(int x, int y){
-  
     pos = new PVector(x,y);
-  
   }
 
   int x(){
-  
     return int(pos.x);
-  
   }
 
   int y(){
-  
     return int(pos.y);
-  
   }
 
 }
@@ -31,11 +25,8 @@ ArrayList<Particle> particles;
 void setup(){
 
   particles = new ArrayList();
-  //particles.add(new Particle(0,0));
   background(BCK_COLOR);
   stroke(PRT_COLOR);
-  //size(400, 400);
-  //noLoop();
   fullScreen();
   noSmooth();
   
@@ -64,17 +55,6 @@ void draw(){
   step();
   deleteDeadParticles();
 
-  //loadPixels();
-  
-  //int topColor = get(width/2, int(height*.25))&0xFFFFFF;
-  //int bottomColor = get(width/2, int(height*.75))&0xFFFFFF;
-  
-  //println(int(topColor), hex(topColor));
-  //println(int(bottomColor), hex(bottomColor));
-  
-  //println(int(BCK_COLOR), hex(BCK_COLOR));
-  //println(int(PRT_COLOR), hex(PRT_COLOR));
-
 }
 
 void point(PVector pos){
@@ -91,26 +71,15 @@ void createNewParticle(int x, int y){
 }
 
 void mousePressed(){
-
-  //redraw();
-  
   createNewParticle(mouseX, mouseY);
-  
-  //int mouseColor = get(mouseX, mouseY)&0xFFFFFF;
-  //println("x:"+mouseX, "y:"+mouseY, int(mouseColor), hex(mouseColor));
-  
 }
 
 void mouseDragged(){
-
   createNewParticle(mouseX, mouseY);
-  
 }
 
 void keyPressed(){
-
   redraw();
-
 }
 
 void deleteDeadParticles(){
@@ -134,10 +103,6 @@ void step(){
   for(Particle p : particles){
     
     int colorBelow = get(p.x(), p.y()+1)&0xFFFFFF;
-    
-    //println("x:"+p.x(), "y:"+p.y());
-    //println(hex(colorBelow));
-    
     if(colorBelow == PRT_COLOR){
     
       continue;
