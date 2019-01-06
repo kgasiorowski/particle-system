@@ -1,6 +1,6 @@
 final int grav_const = 1;
 final float drift_factor = 0.1;
-final float stick_factor = 0.93;
+final float stick_factor = 0.5;
 
 class Particle{
   
@@ -56,6 +56,13 @@ class Particle{
     return get(int(pos.x-1), int(pos.y-1));
   }
 
+  void draw(){
+  
+    stroke(prt_color);
+    point(pos.x, pos.y);
+  
+  }
+
   void step(){
     
     if(colorBottom() != EMPTY_COLOR && (pos.y != height-1)){
@@ -71,7 +78,7 @@ class Particle{
         }else if(colorBottomRight() == EMPTY_COLOR){
         
           pos.x += 1;
-          pos.y -= 1;
+          pos.y += 1;
         
         }
         
