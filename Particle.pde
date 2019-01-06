@@ -98,20 +98,24 @@ class Particle{
                 
                 }
             
-            }/*else if(colorLeft() == EMPTY_COLOR || colorRight() == EMPTY_COLOR){
+            }else if(colorLeft() == EMPTY_COLOR || colorRight() == EMPTY_COLOR){
             
+                int dx = 0;
+                
                 if(colorLeft() == EMPTY_COLOR && colorRight() != EMPTY_COLOR)
-                    pos.x += -1;
+                    dx = -1;
                 else if(colorRight() == EMPTY_COLOR && colorLeft() != EMPTY_COLOR)
-                    pos.x += 1;
+                    dx = 1;
                 else{
                     
-                    pos.x += int(random(0,2)) == 0? -1 : 1;
+                    dx = int(random(0,2)) == 0? -1 : 1;
                 
                 }
                  
+                if(random(0,1) < flow_slider.getValue())
+                    pos.x += dx;
             
-            }*/
+            }
           
         }else{
             
@@ -142,8 +146,6 @@ class Particle{
                 //pos.x += drift;
                   
             }
-            
-            
             
         }
             

@@ -2,7 +2,6 @@ import controlP5.*;
 
 final color EMPTY_COLOR = color(0);
 final color PRT_COLOR = color(255, 234, 130);
-final boolean testrect = false;
 final int brushsize = 2;
 
 final int controlwidth = 220;
@@ -26,15 +25,6 @@ void draw(){
   
     loadPixels();
     background(EMPTY_COLOR);
-      
-    if(rect_checkbox.getItem(0).getState()){
-      
-        color rectcolor = color(128,128,128);
-        noStroke();
-        fill(rectcolor);
-        rect(renderwidth*.1, height*.95, renderwidth*.8, 10);
-    
-    }
     
     drawControls();
     
@@ -63,7 +53,7 @@ void createNewParticle(int x, int y){
         if(p.x() == x && p.y() == y)
             return;
       
-    particles.add(new Particle(x, y, particle_cp.getRGB(), rect_checkbox.getItem(1).getState()));
+    particles.add(new Particle(x, y, particle_cp.getRGB(), rect_checkbox.getState("Static Particles")));
     println(particles.size());
 
 }
