@@ -63,7 +63,7 @@ void createNewParticle(int x, int y){
         if(p.x() == x && p.y() == y)
             return;
       
-    particles.add(new Particle(x, y, particle_cp.getRGB()));
+    particles.add(new Particle(x, y, particle_cp.getRGB(), rect_checkbox.getItem(1).getState()));
     println(particles.size());
 
 }

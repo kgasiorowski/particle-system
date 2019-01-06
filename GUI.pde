@@ -25,12 +25,16 @@ void setupGUI(){
     rect_checkbox = cp5.addCheckBox("Test rectangle")
         .setPosition(renderwidth+10, 100)
         .setSize(10, 10)
-        .addItem("Draw rectangle", 0);
+        .addItem("Draw rectangle", 0)
+        .addItem("Static Particles", 1);
 
     particle_cp = cp5.addColorWheel("Particle Color")
         .setPosition(renderwidth+10, 130)
         .setRGB(0x00FFEA82)
         .setAlpha(0xFF);
+
+    cp5.addFrameRate()
+        .setPosition(10,10);
 
 }
 

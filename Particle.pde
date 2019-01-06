@@ -3,15 +3,21 @@ final int grav_const = 1;
 class Particle{
   
     PVector pos;
-    int prt_color;
-  
-    Particle(int x, int y){
-        pos = new PVector(x,y);
-    }
+    final int prt_color;
+    final boolean isStatic;
 
     Particle(int x, int y, int _color){
-        this(x, y);
+        pos = new PVector(x,y);
         prt_color = _color;
+        isStatic = false;
+    }
+
+    Particle(int x, int y, int _color, boolean _isStatic){
+    
+        pos = new PVector(x, y);
+        prt_color = _color;
+        isStatic = _isStatic;
+        
     }
 
     int x(){
@@ -63,8 +69,12 @@ class Particle{
 
     void step(){
     
+        // Never move if this particle is static
+        if(isStatic)
+            return;
+        
         // Particle is blocked from moving lower.
-        if(colorBottom() != EMPTY_COLOR && (pos.y != height-1)){
+        if(colorBottom() != EMPTY_COLOR && (pos.y < height-1)){
             
             //Particles should "cascade" if there's free space to the left or right
             if(colorBottomLeft() == EMPTY_COLOR || colorBottomRight() == EMPTY_COLOR){
