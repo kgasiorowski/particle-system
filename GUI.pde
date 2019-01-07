@@ -39,10 +39,8 @@ void setupGUI(){
 
     particle_cp = cp5.addColorWheel("Particle Color")
         .setPosition(renderwidth+10, 190)
-        .setRGB(0x00FFEA82)
+        .setRGB(0xFFEA82)
         .setAlpha(0xFF);
-
-    
 
     cp5.addFrameRate()
         .setPosition(10,10);
@@ -52,6 +50,7 @@ void setupGUI(){
 void Reset(){
     
     particles.clear();
+    println(particles.size());
 
 }
 

@@ -15,7 +15,6 @@ void setup(){
     particles = new ArrayList();
     background(EMPTY_COLOR);
     stroke(PRT_COLOR);
-    //fullScreen();
     size(940,600);
     noSmooth();
   
@@ -24,8 +23,8 @@ void setup(){
 void draw(){
   
     loadPixels();
-    background(EMPTY_COLOR);
     
+    background(EMPTY_COLOR);
     drawControls();
     
     if(mousePressed){
@@ -39,11 +38,14 @@ void draw(){
     }
       
     deleteDeadParticles();
-      
+    
     for(Particle p : particles){
-        p.step();
+        if(!p.isStatic)
+             p.step();
         p.draw();
     }
+      
+    
       
 }
 

@@ -4,7 +4,7 @@ class Particle{
   
     PVector pos;
     final int prt_color;
-    final boolean isStatic;
+    boolean isStatic;
 
     Particle(int x, int y, int _color){
         pos = new PVector(x,y);
@@ -68,10 +68,6 @@ class Particle{
     }
 
     void step(){
-    
-        // Never move if this particle is static
-        if(isStatic)
-            return;
         
         // Particle is blocked from moving lower.
         if(colorBottom() != EMPTY_COLOR && (pos.y < height-1)){
@@ -136,14 +132,6 @@ class Particle{
                     drift = int(random(0,2)) == 0? -1 : 1;
                 
                 pos.x += drift;
-                
-                //int drift = int(random(0,2)) == 0? -1 : 1;
-                
-                //// Prevent particles from colliding to the left or right
-                //if((drift == -1 && colorBottomLeft() != EMPTY_COLOR) || (drift == 1 && colorBottomRight() != EMPTY_COLOR))
-                //    drift = 0;
-                  
-                //pos.x += drift;
                   
             }
             
