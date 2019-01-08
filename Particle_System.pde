@@ -8,11 +8,13 @@ final int controlwidth = 220;
 final int renderwidth = 720;
 
 ArrayList<Particle> particles;
+Particle particlesMap[][];
 
 void setup(){
 
     setupGUI();
     particles = new ArrayList();
+    particlesMap = new Particle[width-controlwidth][height];
     background(EMPTY_COLOR);
     stroke(PRT_COLOR);
     size(940,600);
@@ -29,13 +31,23 @@ void draw(){
     
     if(mousePressed){
     
-        int mx = mouseX;
-        int my = mouseY;
+        if(rect_checkbox.getState("Eraser")){
         
-        if(mx < width-controlwidth)
-            paintbrush(mx, my);
+            eraseBrush();
+            
+        }else{
+    
+            int mx = mouseX;
+            int my = mouseY;
+            
+            if(mx < width-controlwidth)
+                paintbrush(mx, my);
       
+        }
+        
     }
+    
+    
       
     deleteDeadParticles();
     
@@ -77,13 +89,29 @@ void deleteDeadParticles(){
       
         Particle p = particles.get(i);
         
-        if(p.y() >= height || p.x() >= width-controlwidth || p.x() < 1){
+        if(p.y() >= height || p.x() >= width-controlwidth || p.x() < 1 || p.dead){
           
             particles.remove(i);
             println(particles.size());
           
         }
         
+    }
+
+}
+
+void eraseBrush(){
+
+    int x = mouseX, y = mouseY;
+    
+    for(Particle p : particles){
+    
+        if(p.pos.x == x && p.pos.y == y){
+        
+            p.dead = true;
+        
+        }
+    
     }
 
 }

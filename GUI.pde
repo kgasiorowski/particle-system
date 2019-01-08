@@ -35,7 +35,8 @@ void setupGUI(){
     rect_checkbox = cp5.addCheckBox("")
         .setPosition(renderwidth+10, 160)
         .setSize(10, 10)
-        .addItem("Static Particles", 1);
+        .addItem("Static Particles", 1)
+        .addItem("Eraser", 2);
 
     particle_cp = cp5.addColorWheel("Particle Color")
         .setPosition(renderwidth+10, 190)

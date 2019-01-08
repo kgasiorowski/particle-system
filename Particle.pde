@@ -5,19 +5,20 @@ class Particle{
     PVector pos;
     final int prt_color;
     boolean isStatic;
+    boolean dead;
 
     Particle(int x, int y, int _color){
         pos = new PVector(x,y);
         prt_color = _color;
         isStatic = false;
+        dead = false;
     }
 
     Particle(int x, int y, int _color, boolean _isStatic){
-    
         pos = new PVector(x, y);
         prt_color = _color;
         isStatic = _isStatic;
-        
+        dead = false;
     }
 
     int x(){
