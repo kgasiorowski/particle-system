@@ -1,9 +1,8 @@
 ControlP5 cp5;
-Slider drift_slider, stick_slider, brush_slider, flow_slider;
+Slider brush_slider;
 Button reset;
-CheckBox rect_checkbox;
-ColorWheel particle_cp;
 ScrollableList options;
+Toggle eraser;
 
 void setupGUI(){
     
@@ -14,43 +13,23 @@ void setupGUI(){
     reset = cp5.addButton("Reset")
         .setPosition(renderwidth+10, baseoffset);
     
-    drift_slider = cp5.addSlider("Drift Factor")
-        .setRange(0,1)
-        .setPosition(renderwidth+10, (baseoffset += 30))
-        .setValue(0.1);
-    
-    stick_slider = cp5.addSlider("Stick Factor")
-        .setRange(0,1)
-        .setPosition(renderwidth+10, (baseoffset += 30))
-        .setValue(.75);
-    
-    flow_slider = cp5.addSlider("Flow Factor")
-        .setRange(0,1)
-        .setPosition(renderwidth+10, (baseoffset += 30))
-        .setValue(0);
-    
     brush_slider = cp5.addSlider("Brush Size")
         .setRange(0, 3)
         .setNumberOfTickMarks(4)
         .setPosition(renderwidth+10, (baseoffset += 30))
         .setValue(2);
 
-    particle_cp = cp5.addColorWheel("Particle Color")
-        .setPosition(renderwidth+10, (baseoffset += 30))
-        .setRGB(0xFFEA82)
-        .setAlpha(0xFF);
-
     List particleOptions = new ArrayList();
     for(PARTICLE_TYPE p : PARTICLE_TYPE.values()){
     
-        particleOptions.add(p.getName());
+        particleOptions.add(p.getProps().name);
     
     }
     
     options = cp5.addScrollableList("Options")
-        .setPosition(renderwidth+10, (baseoffset += 220))
+        .setPosition(renderwidth+10, (baseoffset += 30))
         .setItems(particleOptions)
-        .setType(ControlP5.DROPDOWN);
+        .setType(ControlP5.LIST);
 
     cp5.addFrameRate()
         .setPosition(10,10);
@@ -69,20 +48,8 @@ void Reset(){
 
 void Options(int n){
 
-    switch(n){
+    current_type = PARTICLE_TYPE.values()[n];
     
-        case 0:
-            type = PARTICLE_TYPE.DYNAMIC;
-        break;
-        case 1:
-            type = PARTICLE_TYPE.STATIC;
-        break;
-        case 2:
-            type = PARTICLE_TYPE.ERASER;
-        break;
-    
-    }
-
 }
 
 void drawGUI(){

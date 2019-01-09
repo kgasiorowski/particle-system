@@ -7,21 +7,6 @@ color BACKGROUND_COLOR = color(0);
 final int controlwidth = 220;
 final int renderwidth = 720;
 
-public enum PARTICLE_TYPE{
-
-    DYNAMIC("Normal"),
-    STATIC("Static"),
-    ERASER("Eraser");
-    
-    private final String s;
-    private PARTICLE_TYPE(final String _s){s = _s;}
-    public String getName(){
-        return s;
-    }
-
-}
-PARTICLE_TYPE type = PARTICLE_TYPE.DYNAMIC;
-
 ArrayList<Particle> particles;
 Particle particleMap[][];
 
@@ -50,11 +35,11 @@ void draw(){
     
     if(mousePressed){
     
-        if(type == PARTICLE_TYPE.ERASER){
+        //if(default_type == PARTICLE_TYPE.ERASER){
         
-            eraseBrush();
+        //    eraseBrush();
             
-        }else{
+        //}else{
             
             if(mouseX < width-controlwidth)
             {
@@ -62,7 +47,7 @@ void draw(){
                 paintbrush(pmouseX, pmouseY);
             }
       
-        }
+        //}
         
     }
       
@@ -85,18 +70,11 @@ void createNewParticle(int x, int y){
         if(p.x == x && p.y == y)
             return;
       
-    Particle newParticle;
-    
-    
-    
-    if(type == PARTICLE_TYPE.STATIC)
-        newParticle = new Particle(x, y, color(139, 148, 154), true);
-    else
-        newParticle = new Particle(x, y, particle_cp.getRGB(), false);
+    Particle newParticle = new Particle(x, y, current_type.getProps());
     
     particleMap[x][y] = newParticle;
     particles.add(newParticle);
-
+    
 }
 
 void paintbrush(int x, int y){

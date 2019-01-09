@@ -3,23 +3,21 @@ final int grav_const = 1;
 class Particle{
   
     int x, y;
-    final int prt_color;
+    int prt_color;
     boolean isStatic;
     boolean dead;
+    float stick_factor;
+    float float_factor;
+    float drift_factor;
 
-    Particle(int _x, int _y, int _color){
+    Particle(int _x, int _y, ParticleProperties p){
         x = _x;
         y = _y;
-        prt_color = _color;
-        isStatic = false;
-        dead = false;
-    }
-
-    Particle(int _x, int _y, int _color, boolean _isStatic){
-        x = _x;
-        y = _y;
-        prt_color = _color;
-        isStatic = _isStatic;
+        isStatic = p.isStatic;
+        prt_color = p.prt_color;
+        stick_factor = p.stick_factor;
+        float_factor = p.float_factor;
+        drift_factor = p.drift_factor;
         dead = false;
     }
 
@@ -89,7 +87,7 @@ class Particle{
             if(getBottomRight() == null || getBottomLeft() == null){
                 
                 // Since we are "cascading" the particle will always go down one (hence dy is always 1)
-                int dx = 0, dy = 1;
+                int dx = 0, dy = grav_const;
                 
                 // Figure out if we're shifting the the left or right
                 if(getBottomLeft() == null && getBottomRight() != null)
@@ -100,7 +98,7 @@ class Particle{
                     dx = int(random(0,2)) == 0 ? -1 : 1;
             
                 // Roll a random number to control the frequency of cascades
-                if(random(0,1) > stick_slider.getValue()){
+                if(random(0,1) > stick_factor){
                 
                     x += dx;
                     y += dy;
@@ -121,7 +119,7 @@ class Particle{
                 
                 }
                  
-                if(random(0,1) < flow_slider.getValue())
+                if(random(0,1) < float_factor)
                     x += dx;
             
             }
@@ -133,7 +131,7 @@ class Particle{
             y += grav_const;
             
             // Do some horizontal jiggling
-            if(random(0,1) <= drift_slider.getValue()){
+            if(random(0,1) <= drift_factor){
               
                 int drift = 0;
                 
