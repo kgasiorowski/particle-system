@@ -1,4 +1,6 @@
 import controlP5.*;
+import java.util.List;
+import java.util.Arrays;
 
 final color EMPTY_COLOR = color(0);
 final color PRT_COLOR = color(255, 234, 130);
@@ -8,18 +10,22 @@ final int controlwidth = 220;
 final int renderwidth = 720;
 
 ArrayList<Particle> particles;
-Particle particlesMap[][];
+Particle particleMap[][];
 
 void setup(){
 
+    // Set up our GUI
     setupGUI();
+    
+    // Init our data structures
     particles = new ArrayList();
-    particlesMap = new Particle[width-controlwidth][height];
+    particleMap = new Particle[width-controlwidth][height];
+    
+    // Init our basic work area
     background(EMPTY_COLOR);
-    stroke(PRT_COLOR);
     size(940,600);
     noSmooth();
-  
+      
 }
 
 void draw(){
@@ -27,7 +33,7 @@ void draw(){
     loadPixels();
     
     background(EMPTY_COLOR);
-    drawControls();
+    drawGUI();
     
     if(mousePressed){
     
@@ -36,18 +42,16 @@ void draw(){
             eraseBrush();
             
         }else{
-    
-            int mx = mouseX;
-            int my = mouseY;
             
-            if(mx < width-controlwidth)
-                paintbrush(mx, my);
+            if(mouseX < width-controlwidth)
+            {
+                paintbrush(mouseX, mouseY);
+                paintbrush(pmouseX, pmouseY);
+            }
       
         }
         
     }
-    
-    
       
     deleteDeadParticles();
     
@@ -57,18 +61,26 @@ void draw(){
         p.draw();
     }
       
-    
-      
 }
 
 void createNewParticle(int x, int y){
-
+    
+    if(validateCoords(x, y))
+        return;
+    
     for(Particle p : particles)
-        if(p.x() == x && p.y() == y)
+        if(p.x == x && p.y == y)
             return;
       
-    particles.add(new Particle(x, y, particle_cp.getRGB(), rect_checkbox.getState("Static Particles")));
-    println(particles.size());
+    Particle newParticle;
+    
+    if(rect_checkbox.getState("Static Particles"))
+        newParticle = new Particle(x, y, color(139, 148, 154), true);
+    else
+        newParticle = new Particle(x, y, particle_cp.getRGB(), false);
+    
+    particleMap[x][y] = newParticle;
+    particles.add(newParticle);
 
 }
 
@@ -89,10 +101,10 @@ void deleteDeadParticles(){
       
         Particle p = particles.get(i);
         
-        if(p.y() >= height || p.x() >= width-controlwidth || p.x() < 1 || p.dead){
+        if(p.dead){
           
+            particleMap[p.x][p.y] = null;
             particles.remove(i);
-            println(particles.size());
           
         }
         
@@ -103,15 +115,25 @@ void deleteDeadParticles(){
 void eraseBrush(){
 
     int x = mouseX, y = mouseY;
+    int px = pmouseX, py = pmouseY;
     
-    for(Particle p : particles){
-    
-        if(p.pos.x == x && p.pos.y == y){
+    if(validateCoords(x, y) && validateCoords(px, py))
+        return;
         
-            p.dead = true;
+    Particle p;
         
-        }
+    p = particleMap[x][y];
+    if(p != null)
+        p.dead = true;
     
-    }
+    p = particleMap[px][py];
+    if(p != null)
+        p.dead = true;
 
+}
+
+boolean validateCoords(int x, int y){
+
+    return x < 0 || y < 0 || x > particleMap.length-1 || y > particleMap[0].length-1;
+    
 }

@@ -3,45 +3,56 @@ Slider drift_slider, stick_slider, brush_slider, flow_slider;
 Button reset;
 CheckBox rect_checkbox;
 ColorWheel particle_cp;
+ScrollableList options;
 
 void setupGUI(){
     
     cp5 = new ControlP5(this);
     
+    int baseoffset = 10;
+    
     reset = cp5.addButton("Reset")
-        .setPosition(renderwidth+10, 10);
+        .setPosition(renderwidth+10, baseoffset);
     
     drift_slider = cp5.addSlider("Drift Factor")
         .setRange(0,1)
-        .setPosition(renderwidth+10, 40)
+        .setPosition(renderwidth+10, (baseoffset += 30))
         .setValue(0.1);
     
     stick_slider = cp5.addSlider("Stick Factor")
         .setRange(0,1)
-        .setPosition(renderwidth+10, 70)
+        .setPosition(renderwidth+10, (baseoffset += 30))
         .setValue(.75);
     
     flow_slider = cp5.addSlider("Flow Factor")
         .setRange(0,1)
-        .setPosition(renderwidth+10, 100)
+        .setPosition(renderwidth+10, (baseoffset += 30))
         .setValue(0);
     
     brush_slider = cp5.addSlider("Brush Size")
         .setRange(0, 3)
         .setNumberOfTickMarks(4)
-        .setPosition(renderwidth+10, 130)
-        .setValue(3);
+        .setPosition(renderwidth+10, (baseoffset += 30))
+        .setValue(2);
+    
     
     rect_checkbox = cp5.addCheckBox("")
-        .setPosition(renderwidth+10, 160)
+        .setPosition(renderwidth+10, (baseoffset += 30))
         .setSize(10, 10)
         .addItem("Static Particles", 1)
         .addItem("Eraser", 2);
 
     particle_cp = cp5.addColorWheel("Particle Color")
-        .setPosition(renderwidth+10, 190)
+        .setPosition(renderwidth+10, (baseoffset += 30))
         .setRGB(0xFFEA82)
         .setAlpha(0xFF);
+
+    List particleOptions = Arrays.asList("Static", "Eraser");
+    
+    options = cp5.addScrollableList("Options")
+        .setPosition(renderwidth+10, (baseoffset += 220))
+        .setItems(particleOptions)
+        .setType(ControlP5.DROPDOWN);
 
     cp5.addFrameRate()
         .setPosition(10,10);
@@ -50,12 +61,21 @@ void setupGUI(){
 
 void Reset(){
     
+    // More efficient than entirely clearing the array
+    for(Particle p : particles)
+        particleMap[p.x][p.y] = null;
+    
     particles.clear();
-    println(particles.size());
 
 }
 
-void drawControls(){
+void Options(){
+
+    
+
+}
+
+void drawGUI(){
 
     color settingsColor = color (193, 217, 255);
     noStroke(); 
