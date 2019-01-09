@@ -30,6 +30,10 @@ void setupGUI(){
         .setPosition(renderwidth+10, (baseoffset += 30))
         .setItems(particleOptions)
         .setType(ControlP5.LIST);
+    options = options.setHeight(options.getItems().size() * 16);
+
+    eraser = cp5.addToggle("Eraser")
+        .setPosition(renderwidth+10, (baseoffset += (16 * options.getItems().size())));
 
     cp5.addFrameRate()
         .setPosition(10,10);

@@ -55,10 +55,9 @@ void createNewParticle(int x, int y){
     if(validateCoords(x, y))
         return;
     
-    for(Particle p : particles)
-        if(p.x == x && p.y == y)
-            return;
-      
+    if(particleMap[x][y] != null)
+        return;
+    
     Particle newParticle = new Particle(x, y, current_type);
     
     particleMap[x][y] = newParticle;
@@ -72,7 +71,11 @@ void paintbrush(int x, int y){
     
     for(int i = x-r; i < x+r+1; i++)
         for(int j = y-r; j < y+r+1; j++)
-            createNewParticle(i, j);
+            if(eraser.getState())
+                markAsDead(i, j);
+            else
+                createNewParticle(i, j);
+        
     
 }
 
@@ -94,24 +97,15 @@ void deleteDeadParticles(){
 
 }
 
-void eraseBrush(){
-
-    int x = mouseX, y = mouseY;
-    int px = pmouseX, py = pmouseY;
+void markAsDead(int x, int y){
     
-    if(validateCoords(x, y) && validateCoords(px, py))
+    if(validateCoords(x, y))
         return;
         
-    Particle p;
+    Particle p = particleMap[x][y];
+    if(p != null)
+        p.dead = true;
         
-    p = particleMap[x][y];
-    if(p != null)
-        p.dead = true;
-    
-    p = particleMap[px][py];
-    if(p != null)
-        p.dead = true;
-
 }
 
 boolean validateCoords(int x, int y){

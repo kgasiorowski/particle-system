@@ -130,6 +130,10 @@ class Particle{
               particleMap[x][y].dead = true;
               return;
             
+            }else if(this.type == PARTICLE_TYPE.PLANT){
+            
+                
+            
             }
             
             if(bottomRightFree || bottomLeftFree){
