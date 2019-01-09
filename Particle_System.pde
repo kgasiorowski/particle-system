@@ -2,12 +2,25 @@ import controlP5.*;
 import java.util.List;
 import java.util.Arrays;
 
-final color EMPTY_COLOR = color(0);
-final color PRT_COLOR = color(255, 234, 130);
-final int brushsize = 2;
+color BACKGROUND_COLOR = color(0);
 
 final int controlwidth = 220;
 final int renderwidth = 720;
+
+public enum PARTICLE_TYPE{
+
+    DYNAMIC("Normal"),
+    STATIC("Static"),
+    ERASER("Eraser");
+    
+    private final String s;
+    private PARTICLE_TYPE(final String _s){s = _s;}
+    public String getName(){
+        return s;
+    }
+
+}
+PARTICLE_TYPE type = PARTICLE_TYPE.DYNAMIC;
 
 ArrayList<Particle> particles;
 Particle particleMap[][];
@@ -22,7 +35,7 @@ void setup(){
     particleMap = new Particle[width-controlwidth][height];
     
     // Init our basic work area
-    background(EMPTY_COLOR);
+    background(BACKGROUND_COLOR);
     size(940,600);
     noSmooth();
       
@@ -32,12 +45,12 @@ void draw(){
   
     loadPixels();
     
-    background(EMPTY_COLOR);
+    background(BACKGROUND_COLOR);
     drawGUI();
     
     if(mousePressed){
     
-        if(rect_checkbox.getState("Eraser")){
+        if(type == PARTICLE_TYPE.ERASER){
         
             eraseBrush();
             
@@ -74,7 +87,9 @@ void createNewParticle(int x, int y){
       
     Particle newParticle;
     
-    if(rect_checkbox.getState("Static Particles"))
+    
+    
+    if(type == PARTICLE_TYPE.STATIC)
         newParticle = new Particle(x, y, color(139, 148, 154), true);
     else
         newParticle = new Particle(x, y, particle_cp.getRGB(), false);

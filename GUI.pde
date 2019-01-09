@@ -34,20 +34,18 @@ void setupGUI(){
         .setNumberOfTickMarks(4)
         .setPosition(renderwidth+10, (baseoffset += 30))
         .setValue(2);
-    
-    
-    rect_checkbox = cp5.addCheckBox("")
-        .setPosition(renderwidth+10, (baseoffset += 30))
-        .setSize(10, 10)
-        .addItem("Static Particles", 1)
-        .addItem("Eraser", 2);
 
     particle_cp = cp5.addColorWheel("Particle Color")
         .setPosition(renderwidth+10, (baseoffset += 30))
         .setRGB(0xFFEA82)
         .setAlpha(0xFF);
 
-    List particleOptions = Arrays.asList("Static", "Eraser");
+    List particleOptions = new ArrayList();
+    for(PARTICLE_TYPE p : PARTICLE_TYPE.values()){
+    
+        particleOptions.add(p.getName());
+    
+    }
     
     options = cp5.addScrollableList("Options")
         .setPosition(renderwidth+10, (baseoffset += 220))
@@ -69,9 +67,21 @@ void Reset(){
 
 }
 
-void Options(){
+void Options(int n){
 
+    switch(n){
     
+        case 0:
+            type = PARTICLE_TYPE.DYNAMIC;
+        break;
+        case 1:
+            type = PARTICLE_TYPE.STATIC;
+        break;
+        case 2:
+            type = PARTICLE_TYPE.ERASER;
+        break;
+    
+    }
 
 }
 
