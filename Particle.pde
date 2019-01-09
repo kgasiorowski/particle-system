@@ -33,9 +33,7 @@ class Particle{
 
     @Override
     String toString(){
-    
         return "Posx:"+ x + "Posy:" + y + " Color:" + hex(prt_color);
-    
     }
 
     Particle getBottom(){

@@ -63,7 +63,7 @@ public enum PARTICLE_TYPE{
     SAND(new ParticleProperties("Sand")
                 .setDensity(2)
                 .setColor(0xFFFFEA82)
-                .setStickFactor(.05)
+                .setStickFactor(.1)
                 .setFloatFactor(.01)
                 .setDriftFactor(.1)
                 .setStatic(false)),
@@ -78,7 +78,23 @@ public enum PARTICLE_TYPE{
     
     CONCRETE(new ParticleProperties("Concrete")
                 .setStatic(true)
-                .setColor(0xFF8B949A));
+                .setColor(0xFF8B949A)),
+    
+    SALT(new ParticleProperties("Salt")
+                .setStatic(false)
+                .setColor(0xFFFFFFFF)
+                .setStickFactor(.1)
+                .setFloatFactor(.01)
+                .setDriftFactor(.1)
+                .setDensity(2)),
+    
+    SALTWATER(new ParticleProperties("Saltwater")
+                .setStatic(false)
+                .setColor(0xFF99CCFF)
+                .setStickFactor(0)
+                .setFloatFactor(1)
+                .setDriftFactor(.1)
+                .setDensity(1));
     
     private final ParticleProperties p;
     private PARTICLE_TYPE(final ParticleProperties _p){p = _p;}
