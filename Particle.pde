@@ -9,8 +9,10 @@ class Particle{
     float stick_factor;
     float float_factor;
     float drift_factor;
-
-    Particle(int _x, int _y, ParticleProperties p){
+    int density;
+    PARTICLE_TYPE type;
+    
+    Particle(int _x, int _y, ParticleProperties p, PARTICLE_TYPE _type){
         x = _x;
         y = _y;
         isStatic = p.isStatic;
@@ -18,6 +20,14 @@ class Particle{
         stick_factor = p.stick_factor;
         float_factor = p.float_factor;
         drift_factor = p.drift_factor;
+        type = _type;
+        
+        if(isStatic){
+            density = Integer.MAX_VALUE;
+        }else{
+            density = p.density;
+        }
+        
         dead = false;
     }
 
@@ -69,7 +79,7 @@ class Particle{
 
     void step(){
         
-        if(y > height-2 || x >= width-controlwidth-1 || x < 1 || y < 1){
+        if(y > height-2 || x >= width-controlwidth-1 || x < 1 || y < 1 || prt_color == BACKGROUND_COLOR){
             
             dead = true;
             return;
@@ -83,16 +93,23 @@ class Particle{
           
         if(getBottom() != null && (y < height-1)){
             
-            //Particles should "cascade" if there's free space to the left or right
-            if(getBottomRight() == null || getBottomLeft() == null){
+            Particle br = getBottomRight(), bl = getBottomLeft(), r = getRight(), l = getLeft();
+            
+            boolean bottomRightFree = (br == null || br.density < this.density);
+            boolean bottomLeftFree = (bl == null || bl.density < this.density);
+            boolean rightFree = (r == null || r.density < this.density);
+            boolean leftFree = (l == null || l.density < this.density);
+            
+            if(bottomRightFree || bottomLeftFree){
                 
+                //Particles should "cascade" if there's free space to the left or right
                 // Since we are "cascading" the particle will always go down one (hence dy is always 1)
                 int dx = 0, dy = grav_const;
                 
                 // Figure out if we're shifting the the left or right
-                if(getBottomLeft() == null && getBottomRight() != null)
+                if(bottomLeftFree && !bottomRightFree)
                     dx = -1;
-                else if(getBottomRight() == null && getBottomLeft() != null)
+                else if(bottomRightFree && !bottomLeftFree)
                     dx = 1;
                 else
                     dx = int(random(0,2)) == 0 ? -1 : 1;
@@ -105,13 +122,13 @@ class Particle{
                 
                 }
             
-            }else if(getLeft() == null || getRight() == null){
+            }else if(leftFree || rightFree){
             
                 int dx = 0;
                 
-                if(getLeft() == null && getRight() != null)
+                if(leftFree && !rightFree)
                     dx = -1;
-                else if(getRight() == null && getLeft() != null)
+                else if(rightFree && !leftFree)
                     dx = 1;
                 else{
                     
@@ -149,8 +166,15 @@ class Particle{
         }
         
         // Since the particle has moved in some way, erase that old matrix spot and set the new one
-        particleMap[oldx][oldy] = null;
-        particleMap[x][y] = this;
+        
+        if(particleMap[x][y] != null){
+            particleMap[x][y].x = oldx;
+            particleMap[x][y].y = oldy;
+        }
+        
+        Particle temp = particleMap[oldx][oldy];
+        particleMap[oldx][oldy] = particleMap[x][y];
+        particleMap[x][y] = temp;
             
     }
 

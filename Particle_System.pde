@@ -35,19 +35,8 @@ void draw(){
     
     if(mousePressed){
     
-        //if(default_type == PARTICLE_TYPE.ERASER){
-        
-        //    eraseBrush();
-            
-        //}else{
-            
-            if(mouseX < width-controlwidth)
-            {
-                paintbrush(mouseX, mouseY);
-                paintbrush(pmouseX, pmouseY);
-            }
-      
-        //}
+        paintbrush(mouseX, mouseY);
+        paintbrush(pmouseX, pmouseY);
         
     }
       
@@ -70,7 +59,7 @@ void createNewParticle(int x, int y){
         if(p.x == x && p.y == y)
             return;
       
-    Particle newParticle = new Particle(x, y, current_type.getProps());
+    Particle newParticle = new Particle(x, y, current_type.getProps(), current_type);
     
     particleMap[x][y] = newParticle;
     particles.add(newParticle);
