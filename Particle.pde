@@ -12,9 +12,12 @@ class Particle{
     int density;
     PARTICLE_TYPE type;
     
-    Particle(int _x, int _y, ParticleProperties p, PARTICLE_TYPE _type){
+    Particle(int _x, int _y, PARTICLE_TYPE _type){
         x = _x;
         y = _y;
+        
+        // Unpack the properties for this type of particle
+        ParticleProperties p = _type.getProps();
         isStatic = p.isStatic;
         prt_color = p.prt_color;
         stick_factor = p.stick_factor;
@@ -29,6 +32,25 @@ class Particle{
         }
         
         dead = false;
+    }
+
+    void transform(PARTICLE_TYPE newType){
+    
+        ParticleProperties p = newType.getProps();
+    
+        isStatic = p.isStatic;
+        prt_color = p.prt_color;
+        stick_factor = p.stick_factor;
+        float_factor = p.float_factor;
+        drift_factor = p.drift_factor;
+        type = newType;
+        
+        if(isStatic){
+            density = Integer.MAX_VALUE;
+        }else{
+            density = p.density;
+        }
+    
     }
 
     @Override
@@ -77,7 +99,7 @@ class Particle{
 
     void step(){
         
-        if(y > height-2 || x >= width-controlwidth-1 || x < 1 || y < 1 || prt_color == BACKGROUND_COLOR){
+        if(y > height-2 || x >= width-controlwidth-1 || x < 1 || y < 1 || prt_color == BACKGROUND_COLOR || dead){
             
             dead = true;
             return;
@@ -97,6 +119,18 @@ class Particle{
             boolean bottomLeftFree = (bl == null || bl.density < this.density);
             boolean rightFree = (r == null || r.density < this.density);
             boolean leftFree = (l == null || l.density < this.density);
+            
+            if(
+                (this.type == PARTICLE_TYPE.WATER && getBottom().type == PARTICLE_TYPE.SALT) || 
+                (this.type == PARTICLE_TYPE.SALT && getBottom().type == PARTICLE_TYPE.WATER)
+              )
+            {
+            
+              particleMap[x][y+1].transform(PARTICLE_TYPE.SALTWATER);
+              particleMap[x][y].dead = true;
+              return;
+            
+            }
             
             if(bottomRightFree || bottomLeftFree){
                 

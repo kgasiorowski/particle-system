@@ -61,7 +61,7 @@ static class ParticleProperties{
 public enum PARTICLE_TYPE{
 
     SAND(new ParticleProperties("Sand")
-                .setDensity(2)
+                .setDensity(3)
                 .setColor(0xFFFFEA82)
                 .setStickFactor(.1)
                 .setFloatFactor(.01)
@@ -86,7 +86,7 @@ public enum PARTICLE_TYPE{
                 .setStickFactor(.1)
                 .setFloatFactor(.01)
                 .setDriftFactor(.1)
-                .setDensity(2)),
+                .setDensity(3)),
     
     SALTWATER(new ParticleProperties("Saltwater")
                 .setStatic(false)
@@ -94,7 +94,11 @@ public enum PARTICLE_TYPE{
                 .setStickFactor(0)
                 .setFloatFactor(1)
                 .setDriftFactor(.1)
-                .setDensity(1));
+                .setDensity(2)),
+    
+    PLANT(new ParticleProperties("Plant")
+                .setStatic(true)
+                .setColor(0xFF48F442));
     
     private final ParticleProperties p;
     private PARTICLE_TYPE(final ParticleProperties _p){p = _p;}

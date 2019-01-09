@@ -59,7 +59,7 @@ void createNewParticle(int x, int y){
         if(p.x == x && p.y == y)
             return;
       
-    Particle newParticle = new Particle(x, y, current_type.getProps(), current_type);
+    Particle newParticle = new Particle(x, y, current_type);
     
     particleMap[x][y] = newParticle;
     particles.add(newParticle);
