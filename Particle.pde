@@ -3,6 +3,7 @@ final int grav_const = 1;
 class Particle{
   
     int x, y;
+    int px, py;
     int prt_color;
     boolean isStatic;
     boolean dead;
@@ -25,6 +26,7 @@ class Particle{
         stick_factor = p.stick_factor;
         float_factor = p.float_factor;
         drift_factor = p.drift_factor;
+        lifetime = p.lifetime;
         type = _type;
         
         if(isStatic){
@@ -34,8 +36,6 @@ class Particle{
         }
         
         dead = false;
-        
-        lifetime = p.lifetime;
         
     }
 
@@ -164,6 +164,14 @@ class Particle{
               particleMap[x][y].dead = true;
               return;
             
+            }if(this.type == PARTICLE_TYPE.CEMENT){
+                
+                if(px == x && py == y)
+                    lifetime--;
+            
+                if(lifetime == 0)
+                    transform(PARTICLE_TYPE.CONCRETE);
+            
             }
             
             if(bottomRightFree || bottomLeftFree){
@@ -236,6 +244,9 @@ class Particle{
             particleMap[x][y].x = oldx;
             particleMap[x][y].y = oldy;
         }
+        
+        px = oldx;
+        py = oldy;
         
         Particle temp = particleMap[oldx][oldy];
         particleMap[oldx][oldy] = particleMap[x][y];
