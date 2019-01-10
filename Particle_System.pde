@@ -55,8 +55,11 @@ void createNewParticle(int x, int y){
     if(validateCoords(x, y))
         return;
     
-    if(particleMap[x][y] != null)
-        return;
+    //if(particleMap[x][y] != null)
+    //    return;
+    
+    particles.remove(particleMap[x][y]);
+    particleMap[x][y] = null;
     
     Particle newParticle = new Particle(x, y, current_type);
     
@@ -75,7 +78,9 @@ void paintbrush(int x, int y){
                 markAsDead(i, j);
             else
                 createNewParticle(i, j);
-        
+            
+    updateParticleSize();
+    
     
 }
 
@@ -94,6 +99,8 @@ void deleteDeadParticles(){
         }
         
     }
+
+    updateParticleSize();
 
 }
 

@@ -119,7 +119,7 @@ public enum PARTICLE_TYPE{
     PLANT(new ParticleProperties("Plant")
                 .setStatic(true)
                 .setColor(0xFF48F442)
-                .setFlammability(0.75)),
+                .setFlammability(1)),
     
     OIL(new ParticleProperties("Oil")
                 .setStatic(false)

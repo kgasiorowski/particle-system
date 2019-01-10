@@ -14,7 +14,7 @@ class Particle{
     int lifetime;
     float flammability;
     PARTICLE_TYPE type;
-    
+    String name;
     
     Particle(int _x, int _y, PARTICLE_TYPE _type){
         x = _x;
@@ -30,6 +30,7 @@ class Particle{
         lifetime = p.lifetime;
         flammability = p.flammability;
         type = _type;
+        name = p.name;
         
         if(isStatic){
             density = Integer.MAX_VALUE;
@@ -51,6 +52,9 @@ class Particle{
         float_factor = p.float_factor;
         drift_factor = p.drift_factor;
         type = newType;
+        flammability = p.flammability;
+        lifetime = p.lifetime;
+        name = p.name;
         
         if(isStatic){
             density = Integer.MAX_VALUE;
@@ -139,18 +143,29 @@ class Particle{
                 if(p != null && p.type == PARTICLE_TYPE.WATER)
                     p.transform(PARTICLE_TYPE.PLANT);
                 
-        }else if(this.type == PARTICLE_TYPE.FIRE){
+        }else if(this.type == PARTICLE_TYPE.FIRE){ //<>//
         
-            if(lifetime-- == 0)
+            if(lifetime == 0)
                 dead = true;
             
             List<Particle> neighbors = getNeighbors();
             
-            for(Particle p : neighbors)
+            for(Particle p : neighbors){
+                
+                if(p != null && p.type != PARTICLE_TYPE.FIRE){
+                
+                    println(p.type.getProps().name, p.flammability);   
+                    
+                }
+                
                 if(p != null && random(0,1) < p.flammability){
                     p.transform(PARTICLE_TYPE.FIRE);
                     println("FIRE");
                 }
+            
+            }
+            
+            lifetime--;
             
         }
         

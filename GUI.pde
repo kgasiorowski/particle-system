@@ -3,6 +3,7 @@ Slider brush_slider;
 Button reset;
 ScrollableList options;
 Toggle eraser;
+Textlabel particleNum;
 
 void setupGUI(){
     
@@ -38,6 +39,9 @@ void setupGUI(){
     cp5.addFrameRate()
         .setPosition(10,10);
 
+    particleNum = cp5.addTextlabel("Number of particles")
+        .setPosition(10, 20);
+
 }
 
 void Reset(){
@@ -54,6 +58,12 @@ void Options(int n){
 
     current_type = PARTICLE_TYPE.values()[n];
     
+}
+
+void updateParticleSize(){
+
+    particleNum.setValue(particles.size()+"");
+
 }
 
 void drawGUI(){
