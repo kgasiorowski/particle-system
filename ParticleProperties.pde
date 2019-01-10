@@ -20,6 +20,8 @@ static class ParticleProperties{
     int lifetime;
     // How quickly a material burns
     float flammability;
+    // How quickly a material will be corroded
+    float corrosive;
 
     ParticleProperties(){}
     ParticleProperties(String _name){
@@ -71,6 +73,11 @@ static class ParticleProperties{
         return this;
     }
 
+    public ParticleProperties setCorrosive(float c){
+        corrosive = c;
+        return this;
+    }
+
 }
 
 public enum PARTICLE_TYPE{
@@ -96,7 +103,8 @@ public enum PARTICLE_TYPE{
     CONCRETE(new ParticleProperties("Concrete")
                 .setStatic(true)
                 .setColor(0xFF8B949A)
-                .setFlammability(0)),
+                .setFlammability(0)
+                .setCorrosive(0.01)),
     
     SALT(new ParticleProperties("Salt")
                 .setStatic(false)
@@ -144,6 +152,14 @@ public enum PARTICLE_TYPE{
                 .setStatic(true)
                 .setColor(0xFFD64322)
                 .setLifetime(10)
+                .setFlammability(0)),
+                
+    ACID(new ParticleProperties("Acid")
+                .setStatic(false)
+                .setColor(0xFF68C63F)
+                .setFloatFactor(1)
+                .setDriftFactor(0.5)
+                .setStickFactor(0)
                 .setFlammability(0));
     
     private final ParticleProperties p;

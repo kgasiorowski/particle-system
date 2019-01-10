@@ -15,6 +15,7 @@ class Particle{
     float flammability;
     PARTICLE_TYPE type;
     String name;
+    float corrosive;
     
     Particle(int _x, int _y, PARTICLE_TYPE _type){
         x = _x;
@@ -31,6 +32,7 @@ class Particle{
         flammability = p.flammability;
         type = _type;
         name = p.name;
+        corrosive = p.corrosive;
         
         if(isStatic){
             density = Integer.MAX_VALUE;
@@ -55,6 +57,7 @@ class Particle{
         flammability = p.flammability;
         lifetime = p.lifetime;
         name = p.name;
+        corrosive = p.corrosive;
         
         if(isStatic){
             density = Integer.MAX_VALUE;
@@ -174,11 +177,42 @@ class Particle{
         
         if(this.type == PARTICLE_TYPE.CEMENT){
             
-            if(random(0,1) < 0.3)
+            if(random(0,1) < 0.33)
                 lifetime--;
         
             if(lifetime == 0)
                 transform(PARTICLE_TYPE.CONCRETE);
+        
+        }else if(this.type == PARTICLE_TYPE.ACID){
+        
+            if((getLeft() != null && getLeft().corrosive > 0) && 
+                (getRight() != null && getRight().corrosive > 0)){
+            
+                int dx = int(random(0,2)) == 0 ? -1 : 1;
+                if(dx == -1){
+                
+                    if(random(0,1) < getLeft().corrosive){
+                    
+                        this.dead = true;
+                        particleMap[x-1][y].dead = true;
+                        return;
+                    
+                    }
+                
+                }else{
+                
+                    if(random(0,1) < getRight().corrosive){
+                    
+                        this.dead = true;
+                        particleMap[x+1][y].dead = true;
+                        return;
+                    
+                    }
+                
+                }
+                
+            
+            }
         
         }
         
@@ -197,9 +231,15 @@ class Particle{
                 (this.type == PARTICLE_TYPE.SALT && getBottom().type == PARTICLE_TYPE.WATER))
             {
             
-              particleMap[x][y+1].transform(PARTICLE_TYPE.SALTWATER);
-              particleMap[x][y].dead = true;
-              return;
+                particleMap[x][y+1].transform(PARTICLE_TYPE.SALTWATER);
+                particleMap[x][y].dead = true;
+                return;
+            
+            }else if(this.type == PARTICLE_TYPE.ACID && random(0,1) < getBottom().corrosive){
+            
+                this.dead = true;
+                particleMap[x][y+1].dead = true;
+                return;
             
             }
             
