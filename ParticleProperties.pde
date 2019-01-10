@@ -18,6 +18,8 @@ static class ParticleProperties{
     boolean isStatic;
     // The lifetime for this particle, has several uses
     int lifetime;
+    // How quickly a material burns
+    float flammability;
 
     ParticleProperties(){}
     ParticleProperties(String _name){
@@ -64,6 +66,11 @@ static class ParticleProperties{
         return this;
     }
 
+    public ParticleProperties setFlammability(float f){
+        flammability = f;
+        return this;
+    }
+
 }
 
 public enum PARTICLE_TYPE{
@@ -74,7 +81,8 @@ public enum PARTICLE_TYPE{
                 .setStickFactor(0.1)
                 .setFloatFactor(0.01)
                 .setDriftFactor(0.1)
-                .setStatic(false)),
+                .setStatic(false)
+                .setFlammability(0)),
     
     WATER(new ParticleProperties("Water")
                 .setDensity(1)
@@ -82,11 +90,13 @@ public enum PARTICLE_TYPE{
                 .setStickFactor(0)
                 .setFloatFactor(1)
                 .setDriftFactor(0.5)
-                .setStatic(false)),
+                .setStatic(false)
+                .setFlammability(0)),
     
     CONCRETE(new ParticleProperties("Concrete")
                 .setStatic(true)
-                .setColor(0xFF8B949A)),
+                .setColor(0xFF8B949A)
+                .setFlammability(0)),
     
     SALT(new ParticleProperties("Salt")
                 .setStatic(false)
@@ -94,7 +104,8 @@ public enum PARTICLE_TYPE{
                 .setStickFactor(0.1)
                 .setFloatFactor(0.01)
                 .setDriftFactor(0.1)
-                .setDensity(3)),
+                .setDensity(3)
+                .setFlammability(0)),
     
     SALTWATER(new ParticleProperties("Saltwater")
                 .setStatic(false)
@@ -102,11 +113,13 @@ public enum PARTICLE_TYPE{
                 .setStickFactor(0)
                 .setFloatFactor(1)
                 .setDriftFactor(0.1)
-                .setDensity(2)),
+                .setDensity(2)
+                .setFlammability(0)),
     
     PLANT(new ParticleProperties("Plant")
                 .setStatic(true)
-                .setColor(0xFF48F442)),
+                .setColor(0xFF48F442)
+                .setFlammability(0.75)),
     
     OIL(new ParticleProperties("Oil")
                 .setStatic(false)
@@ -114,7 +127,8 @@ public enum PARTICLE_TYPE{
                 .setStickFactor(0)
                 .setFloatFactor(0.9)
                 .setDriftFactor(0.1)
-                .setDensity(0)),
+                .setDensity(0)
+                .setFlammability(.35)),
     
     CEMENT(new ParticleProperties("Cement")
                 .setStatic(false)
@@ -123,7 +137,14 @@ public enum PARTICLE_TYPE{
                 .setFloatFactor(0.2)
                 .setDriftFactor(0.01)
                 .setDensity(3)
-                .setLifetime(150));
+                .setLifetime(100)
+                .setFlammability(0)),
+    
+    FIRE(new ParticleProperties("Fire")
+                .setStatic(true)
+                .setColor(0xFFD64322)
+                .setLifetime(10)
+                .setFlammability(0));
     
     private final ParticleProperties p;
     private PARTICLE_TYPE(final ParticleProperties _p){p = _p;}

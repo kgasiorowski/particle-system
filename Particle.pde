@@ -12,6 +12,7 @@ class Particle{
     float drift_factor;
     int density;
     int lifetime;
+    float flammability;
     PARTICLE_TYPE type;
     
     
@@ -27,6 +28,7 @@ class Particle{
         float_factor = p.float_factor;
         drift_factor = p.drift_factor;
         lifetime = p.lifetime;
+        flammability = p.flammability;
         type = _type;
         
         if(isStatic){
@@ -137,11 +139,31 @@ class Particle{
                 if(p != null && p.type == PARTICLE_TYPE.WATER)
                     p.transform(PARTICLE_TYPE.PLANT);
                 
+        }else if(this.type == PARTICLE_TYPE.FIRE){
+        
+            if(lifetime-- == 0)
+                dead = true;
+            
+            List<Particle> neighbors = getNeighbors();
+            
+            for(Particle p : neighbors)
+                if(p != null && random(0,1) < p.flammability){
+                    p.transform(PARTICLE_TYPE.FIRE);
+                    println("FIRE");
+                }
+            
         }
         
-        if(isStatic){
-            
+        if(isStatic)
             return;
+        
+        if(this.type == PARTICLE_TYPE.CEMENT){
+            
+            if(random(0,1) < 0.3)
+                lifetime--;
+        
+            if(lifetime == 0)
+                transform(PARTICLE_TYPE.CONCRETE);
         
         }
         
@@ -163,14 +185,6 @@ class Particle{
               particleMap[x][y+1].transform(PARTICLE_TYPE.SALTWATER);
               particleMap[x][y].dead = true;
               return;
-            
-            }if(this.type == PARTICLE_TYPE.CEMENT){
-                
-                if(px == x && py == y)
-                    lifetime--;
-            
-                if(lifetime == 0)
-                    transform(PARTICLE_TYPE.CONCRETE);
             
             }
             
