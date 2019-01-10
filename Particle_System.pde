@@ -43,7 +43,6 @@ void draw(){
     deleteDeadParticles();
     
     for(Particle p : particles){
-        
         p.step();
         p.draw();
     }

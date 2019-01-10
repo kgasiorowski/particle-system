@@ -170,6 +170,46 @@ class Particle{
             
             lifetime--;
             
+        }else if(this.type == PARTICLE_TYPE.WELL){
+        
+            if(random(0,1) < 0.1 && (getTop() != null || getBottom() != null || getRight() != null || getLeft() != null)){
+            
+                PARTICLE_TYPE saved = current_type;
+                current_type = PARTICLE_TYPE.WATER;
+                
+                boolean spawned = false;
+                while(!spawned){
+                
+                    float roll = random(1);
+                    
+                    if(getTop() == null && roll <= .25){
+                    
+                        createNewParticle(x, y-1);
+                        spawned = true;
+                    
+                    }else if(getRight() == null && roll > .25 && roll <= .5){
+                    
+                        createNewParticle(x+1, y);
+                        spawned = true;
+                    
+                    }else if(getLeft() == null && roll > .5 && roll <= .75){
+                    
+                        createNewParticle(x-1, y);
+                        spawned = true;
+                    
+                    }else if(getBottom() == null && roll > .75){
+                    
+                        createNewParticle(x, y+1);
+                        spawned = true;
+                    
+                    }
+                
+                }
+            
+                current_type = saved;
+            
+            }
+        
         }
         
         if(isStatic)
@@ -210,7 +250,6 @@ class Particle{
                     }
                 
                 }
-                
             
             }
         
@@ -236,7 +275,8 @@ class Particle{
                 return;
             
             }else if(this.type == PARTICLE_TYPE.ACID && random(0,1) < getBottom().corrosive){
-            
+                
+                //TODO: make this a random chance to melt on the left, right or bottom. maybe 25-25-50
                 this.dead = true;
                 particleMap[x][y+1].dead = true;
                 return;

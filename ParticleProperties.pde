@@ -89,21 +89,18 @@ public enum PARTICLE_TYPE{
                 .setFloatFactor(0.01)
                 .setDriftFactor(0.1)
                 .setStatic(false)
-                .setFlammability(0)),
+                .setCorrosive(0.2)),
     
     WATER(new ParticleProperties("Water")
                 .setDensity(1)
                 .setColor(0xFF0033CC)
-                .setStickFactor(0)
                 .setFloatFactor(1)
                 .setDriftFactor(0.5)
-                .setStatic(false)
-                .setFlammability(0)),
+                .setStatic(false)),
     
     CONCRETE(new ParticleProperties("Concrete")
                 .setStatic(true)
                 .setColor(0xFF8B949A)
-                .setFlammability(0)
                 .setCorrosive(0.01)),
     
     SALT(new ParticleProperties("Salt")
@@ -112,30 +109,26 @@ public enum PARTICLE_TYPE{
                 .setStickFactor(0.1)
                 .setFloatFactor(0.01)
                 .setDriftFactor(0.1)
-                .setDensity(3)
-                .setFlammability(0)),
+                .setDensity(3)),
     
     SALTWATER(new ParticleProperties("Saltwater")
                 .setStatic(false)
                 .setColor(0xFF99CCFF)
-                .setStickFactor(0)
                 .setFloatFactor(1)
                 .setDriftFactor(0.1)
-                .setDensity(2)
-                .setFlammability(0)),
+                .setDensity(2)),
     
     PLANT(new ParticleProperties("Plant")
                 .setStatic(true)
                 .setColor(0xFF48F442)
-                .setFlammability(1)),
+                .setFlammability(1)
+                .setCorrosive(0.1)),
     
     OIL(new ParticleProperties("Oil")
                 .setStatic(false)
                 .setColor(0xFFCC6600)
-                .setStickFactor(0)
                 .setFloatFactor(0.9)
                 .setDriftFactor(0.1)
-                .setDensity(0)
                 .setFlammability(.35)),
     
     CEMENT(new ParticleProperties("Cement")
@@ -145,22 +138,22 @@ public enum PARTICLE_TYPE{
                 .setFloatFactor(0.2)
                 .setDriftFactor(0.01)
                 .setDensity(3)
-                .setLifetime(100)
-                .setFlammability(0)),
+                .setLifetime(100)),
     
     FIRE(new ParticleProperties("Fire")
                 .setStatic(true)
                 .setColor(0xFFD64322)
-                .setLifetime(10)
-                .setFlammability(0)),
+                .setLifetime(5)),
                 
     ACID(new ParticleProperties("Acid")
                 .setStatic(false)
                 .setColor(0xFF68C63F)
                 .setFloatFactor(1)
-                .setDriftFactor(0.5)
-                .setStickFactor(0)
-                .setFlammability(0));
+                .setDriftFactor(0.5)),
+                
+    WELL(new ParticleProperties("Well")
+                .setStatic(true)
+                .setColor(0xFF0000FF));
     
     private final ParticleProperties p;
     private PARTICLE_TYPE(final ParticleProperties _p){p = _p;}
