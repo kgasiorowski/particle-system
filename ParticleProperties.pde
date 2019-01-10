@@ -1,3 +1,5 @@
+import java.lang.Math;
+
 static class ParticleProperties{
 
     // Name of the particle type (debugging)
@@ -14,9 +16,10 @@ static class ParticleProperties{
     float drift_factor;
     // Negates most of the above properties besides color and name
     boolean isStatic;
+    // The lifetime for this particle, has several uses
+    int lifetime;
 
     ParticleProperties(){}
-
     ParticleProperties(String _name){
         name = _name;
      }
@@ -56,6 +59,11 @@ static class ParticleProperties{
         return this;
     }
 
+    public ParticleProperties setLifetime(int l){
+        lifetime = l;
+        return this;
+    }
+
 }
 
 public enum PARTICLE_TYPE{
@@ -63,9 +71,9 @@ public enum PARTICLE_TYPE{
     SAND(new ParticleProperties("Sand")
                 .setDensity(3)
                 .setColor(0xFFFFEA82)
-                .setStickFactor(.1)
-                .setFloatFactor(.01)
-                .setDriftFactor(.1)
+                .setStickFactor(0.1)
+                .setFloatFactor(0.01)
+                .setDriftFactor(0.1)
                 .setStatic(false)),
     
     WATER(new ParticleProperties("Water")
@@ -73,7 +81,7 @@ public enum PARTICLE_TYPE{
                 .setColor(0xFF0033CC)
                 .setStickFactor(0)
                 .setFloatFactor(1)
-                .setDriftFactor(.5)
+                .setDriftFactor(0.5)
                 .setStatic(false)),
     
     CONCRETE(new ParticleProperties("Concrete")
@@ -83,9 +91,9 @@ public enum PARTICLE_TYPE{
     SALT(new ParticleProperties("Salt")
                 .setStatic(false)
                 .setColor(0xFFFFFFFF)
-                .setStickFactor(.1)
-                .setFloatFactor(.01)
-                .setDriftFactor(.1)
+                .setStickFactor(0.1)
+                .setFloatFactor(0.01)
+                .setDriftFactor(0.1)
                 .setDensity(3)),
     
     SALTWATER(new ParticleProperties("Saltwater")
@@ -93,12 +101,29 @@ public enum PARTICLE_TYPE{
                 .setColor(0xFF99CCFF)
                 .setStickFactor(0)
                 .setFloatFactor(1)
-                .setDriftFactor(.1)
+                .setDriftFactor(0.1)
                 .setDensity(2)),
     
     PLANT(new ParticleProperties("Plant")
                 .setStatic(true)
-                .setColor(0xFF48F442));
+                .setColor(0xFF48F442)),
+    
+    OIL(new ParticleProperties("Oil")
+                .setStatic(false)
+                .setColor(0xFFCC6600)
+                .setStickFactor(0)
+                .setFloatFactor(0.9)
+                .setDriftFactor(0.1)
+                .setDensity(0)),
+    
+    CEMENT(new ParticleProperties("Cement")
+                .setStatic(false)
+                .setColor(0xFFB3C2CC)
+                .setStickFactor(0.25)
+                .setFloatFactor(0.2)
+                .setDriftFactor(0.01)
+                .setDensity(3)
+                .setLifetime(150));
     
     private final ParticleProperties p;
     private PARTICLE_TYPE(final ParticleProperties _p){p = _p;}

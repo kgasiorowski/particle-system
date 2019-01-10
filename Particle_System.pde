@@ -43,8 +43,8 @@ void draw(){
     deleteDeadParticles();
     
     for(Particle p : particles){
-        if(!p.isStatic)
-             p.step();
+        
+        p.step();
         p.draw();
     }
       

@@ -10,7 +10,9 @@ class Particle{
     float float_factor;
     float drift_factor;
     int density;
+    int lifetime;
     PARTICLE_TYPE type;
+    
     
     Particle(int _x, int _y, PARTICLE_TYPE _type){
         x = _x;
@@ -32,6 +34,9 @@ class Particle{
         }
         
         dead = false;
+        
+        lifetime = p.lifetime;
+        
     }
 
     void transform(PARTICLE_TYPE newType){
@@ -56,6 +61,23 @@ class Particle{
     @Override
     String toString(){
         return "Posx:"+ x + "Posy:" + y + " Color:" + hex(prt_color);
+    }
+
+    List<Particle> getNeighbors(){
+    
+        ArrayList<Particle> neighbors = new ArrayList();
+        
+        neighbors.add(getTopLeft());
+        neighbors.add(getTop());
+        neighbors.add(getTopRight());
+        neighbors.add(getLeft());
+        neighbors.add(getRight());
+        neighbors.add(getBottomLeft());
+        neighbors.add(getBottom());
+        neighbors.add(getBottomRight());
+        
+        return neighbors;
+    
     }
 
     Particle getBottom(){
@@ -106,10 +128,24 @@ class Particle{
             
         }
         
-        int oldx, oldy;
+        // Static logic goes here
+        if(this.type == PARTICLE_TYPE.PLANT){
+            
+            List<Particle> neighbors = getNeighbors();
+            
+            for(Particle p : neighbors)
+                if(p != null && p.type == PARTICLE_TYPE.WATER)
+                    p.transform(PARTICLE_TYPE.PLANT);
+                
+        }
         
-        oldx = x;
-        oldy = y;
+        if(isStatic){
+            
+            return;
+        
+        }
+        
+        int oldx = x, oldy = y;
           
         if(getBottom() != null && (y < height-1)){
             
@@ -120,19 +156,13 @@ class Particle{
             boolean rightFree = (r == null || r.density < this.density);
             boolean leftFree = (l == null || l.density < this.density);
             
-            if(
-                (this.type == PARTICLE_TYPE.WATER && getBottom().type == PARTICLE_TYPE.SALT) || 
-                (this.type == PARTICLE_TYPE.SALT && getBottom().type == PARTICLE_TYPE.WATER)
-              )
+            if((this.type == PARTICLE_TYPE.WATER && getBottom().type == PARTICLE_TYPE.SALT) || 
+                (this.type == PARTICLE_TYPE.SALT && getBottom().type == PARTICLE_TYPE.WATER))
             {
             
               particleMap[x][y+1].transform(PARTICLE_TYPE.SALTWATER);
               particleMap[x][y].dead = true;
               return;
-            
-            }else if(this.type == PARTICLE_TYPE.PLANT){
-            
-                
             
             }
             
@@ -202,7 +232,6 @@ class Particle{
         }
         
         // Since the particle has moved in some way, erase that old matrix spot and set the new one
-        
         if(particleMap[x][y] != null){
             particleMap[x][y].x = oldx;
             particleMap[x][y].y = oldy;
