@@ -179,7 +179,7 @@ class Particle{
         }
         
         // Static logic goes here
-        if(this.type == PARTICLE_TYPE.PLANT){
+        if(this.type == PARTICLE_TYPE.PLANT || this.type == PARTICLE_TYPE.WOOD){
             
             List<Particle> neighbors = getNeighbors();
             
@@ -187,9 +187,9 @@ class Particle{
                 if(p != null && p.type == PARTICLE_TYPE.WATER)
                     p.transform(PARTICLE_TYPE.PLANT);
                 
-        }else if(this.type == PARTICLE_TYPE.FIRE){ //<>//
+        }else if(this.type == PARTICLE_TYPE.FIRE || this.type == PARTICLE_TYPE.TORCH){ //<>//
         
-            if(lifetime == 0)
+            if(this.type == PARTICLE_TYPE.FIRE && lifetime == 0)
                 dead = true;
             
             List<Particle> neighbors = getNeighbors();
@@ -202,7 +202,8 @@ class Particle{
             
             }
             
-            lifetime--;
+            if(this.type == PARTICLE_TYPE.FIRE)
+              lifetime--;
             
         }else if(this.type == PARTICLE_TYPE.WELL){
         

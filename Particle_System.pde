@@ -5,26 +5,31 @@ import java.util.Arrays;
 color BACKGROUND_COLOR = color(0);
 
 final int controlwidth = 220;
-final int renderwidth = 720;
+int renderwidth;
 
 ArrayList<Particle> particles;
 ArrayList<Particle> delayedAdd;
 Particle particleMap[][];
 
 void setup(){
+    
+    // Init our basic work area
+    background(BACKGROUND_COLOR);
+    //size(940,600);
+    //size(1080, 600);
+    
+    fullScreen();
+    noSmooth();
 
+    renderwidth = width-controlwidth;
+      
     // Set up our GUI
     setupGUI();
-    
+      
     // Init our data structures
     particles = new ArrayList();
     delayedAdd = new ArrayList();
     particleMap = new Particle[width-controlwidth][height];
-    
-    // Init our basic work area
-    background(BACKGROUND_COLOR);
-    size(940,600);
-    noSmooth();
       
 }
 

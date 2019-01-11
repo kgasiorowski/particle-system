@@ -124,6 +124,10 @@ public enum PARTICLE_TYPE{
                 .setFlammability(1)
                 .setCorrosive(0.1)),
     
+    WOOD(new ParticleProperties("Wood")
+                .setStatic(true)
+                .setColor(0xFF663300)),
+    
     OIL(new ParticleProperties("Oil")
                 .setStatic(false)
                 .setColor(0xFFCC6600)
@@ -143,7 +147,7 @@ public enum PARTICLE_TYPE{
     FIRE(new ParticleProperties("Fire")
                 .setStatic(true)
                 .setColor(0xFFD64322)
-                .setLifetime(5)),
+                .setLifetime(3)),
                 
     ACID(new ParticleProperties("Acid")
                 .setStatic(false)
