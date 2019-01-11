@@ -121,6 +121,47 @@ class Particle{
         return particleMap[x-1][y-1];
     }
 
+    void randomGen(PARTICLE_TYPE type){
+    
+        if(random(0,1) < 0.1 && (getTop() == null || getBottom() == null || getRight() == null || getLeft() == null)){
+                
+                boolean spawned = false;
+                while(!spawned){
+                
+                    float roll = random(1);
+                    
+                    if(getTop() == null && roll <= .25){
+                    
+                        delayedAdd.add(new Particle(x, y-1, type));
+                        spawned = true;
+                    
+                    }else if(getRight() == null && roll > .25 && roll <= .5){
+                    
+                        delayedAdd.add(new Particle(x+1, y, type));
+                        spawned = true;
+                    
+                    }else if(getLeft() == null && roll > .5 && roll <= .75){
+                    
+                        delayedAdd.add(new Particle(x-1, y, type));
+                        spawned = true;
+                    
+                    }else if(getBottom() == null && roll > .75){
+                    
+                        delayedAdd.add(new Particle(x, y+1, type));
+                        spawned = true;
+                    
+                    }else{
+                    
+                        spawned = true;
+                    
+                    }
+                
+                }
+            
+            }
+        
+    }
+
     void draw(){
       
         stroke(prt_color);
@@ -155,15 +196,8 @@ class Particle{
             
             for(Particle p : neighbors){
                 
-                if(p != null && p.type != PARTICLE_TYPE.FIRE){
-                
-                    println(p.type.getProps().name, p.flammability);   
-                    
-                }
-                
                 if(p != null && random(0,1) < p.flammability){
                     p.transform(PARTICLE_TYPE.FIRE);
-                    println("FIRE");
                 }
             
             }
@@ -172,43 +206,19 @@ class Particle{
             
         }else if(this.type == PARTICLE_TYPE.WELL){
         
-            if(random(0,1) < 0.1 && (getTop() != null || getBottom() != null || getRight() != null || getLeft() != null)){
+            randomGen(PARTICLE_TYPE.WATER);
+        
+        }else if(this.type == PARTICLE_TYPE.SPRING){
+        
+            randomGen(PARTICLE_TYPE.OIL);
             
-                PARTICLE_TYPE saved = current_type;
-                current_type = PARTICLE_TYPE.WATER;
-                
-                boolean spawned = false;
-                while(!spawned){
-                
-                    float roll = random(1);
-                    
-                    if(getTop() == null && roll <= .25){
-                    
-                        createNewParticle(x, y-1);
-                        spawned = true;
-                    
-                    }else if(getRight() == null && roll > .25 && roll <= .5){
-                    
-                        createNewParticle(x+1, y);
-                        spawned = true;
-                    
-                    }else if(getLeft() == null && roll > .5 && roll <= .75){
-                    
-                        createNewParticle(x-1, y);
-                        spawned = true;
-                    
-                    }else if(getBottom() == null && roll > .75){
-                    
-                        createNewParticle(x, y+1);
-                        spawned = true;
-                    
-                    }
-                
-                }
-            
-                current_type = saved;
-            
-            }
+        }else if(this.type == PARTICLE_TYPE.TORCH){
+        
+            randomGen(PARTICLE_TYPE.FIRE);
+        
+        }else if(this.type == PARTICLE_TYPE.ACIDGEN){
+        
+            randomGen(PARTICLE_TYPE.ACID);
         
         }
         
@@ -225,6 +235,7 @@ class Particle{
         
         }else if(this.type == PARTICLE_TYPE.ACID){
         
+            // This needs to be re-written
             if((getLeft() != null && getLeft().corrosive > 0) && 
                 (getRight() != null && getRight().corrosive > 0)){
             
@@ -283,7 +294,7 @@ class Particle{
             
             }
             
-            if(bottomRightFree || bottomLeftFree){
+            if(bottomRightFree && rightFree || bottomLeftFree && leftFree){
                 
                 //Particles should "cascade" if there's free space to the left or right
                 // Since we are "cascading" the particle will always go down one (hence dy is always 1)

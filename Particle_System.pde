@@ -8,6 +8,7 @@ final int controlwidth = 220;
 final int renderwidth = 720;
 
 ArrayList<Particle> particles;
+ArrayList<Particle> delayedAdd;
 Particle particleMap[][];
 
 void setup(){
@@ -17,6 +18,7 @@ void setup(){
     
     // Init our data structures
     particles = new ArrayList();
+    delayedAdd = new ArrayList();
     particleMap = new Particle[width-controlwidth][height];
     
     // Init our basic work area
@@ -42,6 +44,16 @@ void draw(){
       
     deleteDeadParticles();
     
+    PARTICLE_TYPE saved = current_type;
+    for(Particle p : delayedAdd){
+        
+        current_type = p.type;
+        createNewParticle(p.x, p.y);
+        
+    }
+    delayedAdd.clear();
+    current_type = saved;
+    
     for(Particle p : particles){
         p.step();
         p.draw();
@@ -53,9 +65,6 @@ void createNewParticle(int x, int y){
     
     if(validateCoords(x, y))
         return;
-    
-    //if(particleMap[x][y] != null)
-    //    return;
     
     particles.remove(particleMap[x][y]);
     particleMap[x][y] = null;

@@ -153,7 +153,19 @@ public enum PARTICLE_TYPE{
                 
     WELL(new ParticleProperties("Well")
                 .setStatic(true)
-                .setColor(0xFF0000FF));
+                .setColor(0xFF0000FF)),
+    
+    SPRING(new ParticleProperties("Spring")
+                .setStatic(true)
+                .setColor(0xFF993333)),
+    
+    TORCH(new ParticleProperties("Torch")
+                .setStatic(true)
+                .setColor(0xFFFF3300)),
+                
+    ACIDGEN(new ParticleProperties("Acid Generator")
+                .setStatic(true)
+                .setColor(0xFF006600));
     
     private final ParticleProperties p;
     private PARTICLE_TYPE(final ParticleProperties _p){p = _p;}
