@@ -165,7 +165,12 @@ public enum PARTICLE_TYPE{
                 
     ACIDGEN(new ParticleProperties("Acid Generator")
                 .setStatic(true)
-                .setColor(0xFF006600));
+                .setColor(0xFF006600)),
+                
+                
+    TEFLON(new ParticleProperties("Teflon")
+                .setStatic(true)
+                .setColor(0xFF3F3F3F));
     
     private final ParticleProperties p;
     private PARTICLE_TYPE(final ParticleProperties _p){p = _p;}
