@@ -51,6 +51,7 @@ void Reset(){
         particleMap[p.x][p.y] = null;
     
     particles.clear();
+    delayedAdd.clear();
 
 }
 

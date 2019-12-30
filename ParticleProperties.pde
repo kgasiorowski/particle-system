@@ -22,6 +22,9 @@ static class ParticleProperties{
     float flammability;
     // How quickly a material will be corroded
     float corrosive;
+    // Generator type
+    PARTICLE_TYPE generator;
+    
 
     ParticleProperties(){}
     ParticleProperties(String _name){
@@ -75,6 +78,11 @@ static class ParticleProperties{
 
     public ParticleProperties setCorrosive(float c){
         corrosive = c;
+        return this;
+    }
+    
+    public ParticleProperties setGenerator(PARTICLE_TYPE type){
+        generator = type;
         return this;
     }
 
@@ -157,20 +165,23 @@ public enum PARTICLE_TYPE{
                 
     WELL(new ParticleProperties("Well")
                 .setStatic(true)
-                .setColor(0xFF0000FF)),
+                .setColor(0xFF0000FF)
+                .setGenerator(PARTICLE_TYPE.WATER)),
     
     SPRING(new ParticleProperties("Spring")
                 .setStatic(true)
-                .setColor(0xFF993333)),
+                .setColor(0xFF993333)
+                .setGenerator(PARTICLE_TYPE.OIL)),
     
     TORCH(new ParticleProperties("Torch")
                 .setStatic(true)
-                .setColor(0xFFFF3300)),
+                .setColor(0xFFFF3300)
+                .setGenerator(PARTICLE_TYPE.FIRE)),
                 
     ACIDGEN(new ParticleProperties("Acid Generator")
                 .setStatic(true)
-                .setColor(0xFF006600)),
-                
+                .setColor(0xFF006600)
+                .setGenerator(PARTICLE_TYPE.ACID)),
                 
     TEFLON(new ParticleProperties("Teflon")
                 .setStatic(true)

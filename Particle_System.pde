@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 color BACKGROUND_COLOR = color(0);
 
-final int controlwidth = 220;
+final int controlwidth = 170;
 int renderwidth;
 
 ArrayList<Particle> particles;
@@ -15,10 +15,8 @@ void setup(){
     
     // Init our basic work area
     background(BACKGROUND_COLOR);
-    //size(940,600);
-    //size(1080, 600);
+    size(600,400);
     
-    fullScreen();
     noSmooth();
 
     renderwidth = width-controlwidth;

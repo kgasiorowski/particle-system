@@ -3,7 +3,7 @@ final int grav_const = 1;
 class Particle{
   
     int x, y;
-    int px, py;
+    //int px, py;
     int prt_color;
     boolean isStatic;
     boolean dead;
@@ -16,6 +16,7 @@ class Particle{
     PARTICLE_TYPE type;
     String name;
     float corrosive;
+    PARTICLE_TYPE generator;
     
     Particle(int _x, int _y, PARTICLE_TYPE _type){
         x = _x;
@@ -33,6 +34,7 @@ class Particle{
         type = _type;
         name = p.name;
         corrosive = p.corrosive;
+        generator = p.generator;
         
         if(isStatic){
             density = Integer.MAX_VALUE;
@@ -204,22 +206,10 @@ class Particle{
             
             if(this.type == PARTICLE_TYPE.FIRE)
               lifetime--;
-            
-        }else if(this.type == PARTICLE_TYPE.WELL){
+              
+        }else if(this.generator != null){
         
-            randomGen(PARTICLE_TYPE.WATER);
-        
-        }else if(this.type == PARTICLE_TYPE.SPRING){
-        
-            randomGen(PARTICLE_TYPE.OIL);
-            
-        }else if(this.type == PARTICLE_TYPE.TORCH){
-        
-            randomGen(PARTICLE_TYPE.FIRE);
-        
-        }else if(this.type == PARTICLE_TYPE.ACIDGEN){
-        
-            randomGen(PARTICLE_TYPE.ACID);
+            randomGen(generator);
         
         }
         
@@ -237,39 +227,42 @@ class Particle{
         }else if(this.type == PARTICLE_TYPE.ACID){
         
             // This needs to be re-written
-            if((getLeft() != null && getLeft().corrosive > 0) && 
-                (getRight() != null && getRight().corrosive > 0)){
+            if(getLeft() != null && getLeft().corrosive > 0 && (getRight() == null || getRight().corrosive <= 0)){
             
-                int dx = int(random(0,2)) == 0 ? -1 : 1;
-                if(dx == -1){
-                
-                    if(random(0,1) < getLeft().corrosive){
+                if(random(0,1) < getLeft().corrosive){
                     
-                        this.dead = true;
-                        particleMap[x-1][y].dead = true;
-                        return;
-                    
-                    }
-                
-                }else{
-                
-                    if(random(0,1) < getRight().corrosive){
-                    
-                        this.dead = true;
-                        particleMap[x+1][y].dead = true;
-                        return;
-                    
-                    }
+                    this.dead = true;
+                    particleMap[x-1][y].dead = true;
+                    return;
                 
                 }
+                
+            }else if(getRight() != null && getRight().corrosive > 0 && (getLeft() == null || getLeft().corrosive <= 0)){
+                
+                if(random(0,1) < getRight().corrosive){
+                    
+                    this.dead = true;
+                    particleMap[x+1][y].dead = true;
+                    return;
+                    
+                }
+            
+            }else if(getRight() != null && getRight().corrosive > 0 && getLeft() != null && getLeft().corrosive > 0){
+            
+                int dx = int(random(0,2)) == 0 ? -1 : 1;
+                this.dead = true;
+                particleMap[x+dx][y].dead = true;
+                return;
             
             }
         
         }
         
         int oldx = x, oldy = y;
-          
-        if(getBottom() != null && (y < height-1)){
+        
+        Particle b = getBottom();
+        
+        if(b != null && (y < height-1)){
             
             Particle br = getBottomRight(), bl = getBottomLeft(), r = getRight(), l = getLeft();
             
@@ -278,24 +271,28 @@ class Particle{
             boolean rightFree = (r == null || r.density < this.density);
             boolean leftFree = (l == null || l.density < this.density);
             
-            if((this.type == PARTICLE_TYPE.WATER && getBottom().type == PARTICLE_TYPE.SALT) || 
-                (this.type == PARTICLE_TYPE.SALT && getBottom().type == PARTICLE_TYPE.WATER))
+            if((this.type == PARTICLE_TYPE.WATER && b.type == PARTICLE_TYPE.SALT) || 
+                (this.type == PARTICLE_TYPE.SALT && b.type == PARTICLE_TYPE.WATER))
             {
             
                 particleMap[x][y+1].transform(PARTICLE_TYPE.SALTWATER);
-                particleMap[x][y].dead = true;
+                //particleMap[x][y].dead = true;
+                this.dead = true;
                 return;
             
             }else if(this.type == PARTICLE_TYPE.ACID && random(0,1) < getBottom().corrosive){
                 
-                //TODO: make this a random chance to melt on the left, right or bottom. maybe 25-25-50
                 this.dead = true;
                 particleMap[x][y+1].dead = true;
                 return;
             
             }
             
-            if(bottomRightFree && rightFree || bottomLeftFree && leftFree){
+            if(b.density < this.density){
+            
+                y += 1;
+            
+            }else if(bottomRightFree && rightFree || bottomLeftFree && leftFree){
                 
                 //Particles should "cascade" if there's free space to the left or right
                 // Since we are "cascading" the particle will always go down one (hence dy is always 1)
@@ -366,8 +363,8 @@ class Particle{
             particleMap[x][y].y = oldy;
         }
         
-        px = oldx;
-        py = oldy;
+        //px = oldx;
+        //py = oldy;
         
         Particle temp = particleMap[oldx][oldy];
         particleMap[oldx][oldy] = particleMap[x][y];
